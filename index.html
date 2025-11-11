@@ -20,6 +20,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link
       rel="stylesheet"
+      href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/smoothness/theme.css"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
@@ -29,6 +33,123 @@
     <title>Task Board</title>
   </head>
   <body class="roboto-font-400">
+    <!-- Modal for add -->
+    <div
+      class="modal fade"
+      id="add-modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">Add Task Card</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Modal content goes here -->
+            <div class="mb-3">
+              <label for="add-card-title"></label>
+              <input
+                type="text"
+                name="add-card-title"
+                placeholder="Card Title..."
+                maxlength="20"
+                id="add-card-title"
+                required
+              />
+            </div>
+            <br />
+            <div class="mb-3">
+              <label for="add-card-description"></label>
+              <textarea
+                rows="5"
+                cols="40"
+                type="text"
+                name="add-card-description"
+                placeholder="Card Description..."
+                maxlength="200"
+                id="add-card-description"
+                required
+              ></textarea>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="datepicker">Select a date:</label>
+            <input type="text" id="datepicker" />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              id="add-card-to-board"
+            >
+              Add Task
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal for add -->
+    <!-- Modal for delete -->
+    <div
+      class="modal fade"
+      id="delete-modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">Delete Card</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Modal content goes here -->
+            <p>Are you sure you want to delete this card?</p>
+            <p>(Cannot be undone)</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              id="delete-card-for-sure"
+            >
+              Delete Card
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal for delete -->
     <nav class="nav-container">
       <div class="logo-container">
         <a class="navbar-brand" href="#">Task Board</a>
@@ -44,11 +165,30 @@
             Add Elements
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
-            <li><a class="dropdown-item" href="#">+ Add Card</a></li>
-            <li><a class="dropdown-item" href="#">✏️ Edit Card</a></li>
+            <li>
+              <a
+                class="dropdown-item"
+                href="javascript:void(0)"
+                id="add-card-button"
+                >+ Add Card</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                href="javascript:void(0)"
+                id="edit-card-button"
+                >✏️ Edit Card</a
+              >
+            </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
-              <a class="dropdown-item text-danger" href="#">Delete Card</a>
+              <a
+                class="dropdown-item text-danger"
+                href="javascript:void(0)"
+                id="delete-card-button"
+                >Delete Card</a
+              >
             </li>
           </ul>
         </div>
@@ -61,32 +201,7 @@
         <div class="row">
           <div class="col col-sm-3">
             <h4>Concept</h4>
-            <div class="column-cards" id="concept-cards">
-              <!-- Cards -->
-              <div class="card card-highlight">
-                <div class="card-body">
-                  <h4>Some Title</h4>
-                  <p>This is some text within a card body.</p>
-                  <h6>
-                    Due Date:<br />
-                    <span class="current-date">November 9, 2025</span><br />
-                    <span class="date-till-now"></span>
-                  </h6>
-                </div>
-              </div>
-              <!-- Cards -->
-              <div class="card card-highlight">
-                <div class="card-body">
-                  <h4>Some Title</h4>
-                  <p>This is some text within a card body.</p>
-                  <h6>
-                    Due Date:<br />
-                    <span class="current-date">December 20, 2025</span><br />
-                    <span class="date-till-now"></span>
-                  </h6>
-                </div>
-              </div>
-            </div>
+            <div class="column-cards" id="concept-cards"></div>
           </div>
           <div class="col col-sm-3">
             <h4>In-Progress</h4>
