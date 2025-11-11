@@ -17,6 +17,15 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/smoothness/theme.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/plugin/customParseFormat.js"></script>
+    <script src="https://unpkg.com/dayjs@1.11.10/plugin/relativeTime.js"></script>
     <title>Task Board</title>
   </head>
   <body class="roboto-font-400">
@@ -43,31 +52,119 @@
             </li>
           </ul>
         </div>
-        <div class="dropdown" data-bs-theme="dark">
-          <button
-            class="btn dropdown-toggle btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Set Status
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
-            <li><a class="dropdown-item" href="#">In-Progress</a></li>
-            <li><a class="dropdown-item" href="#">Need Assistance</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li>
-              <a class="dropdown-item text-success" href="#">Completed</a>
-            </li>
-          </ul>
-        </div>
       </div>
     </nav>
+    <!-- Main Area -->
+    <main class="main-section">
+      <!-- Title Section -->
+      <div class="container text-center col-sm-12 col-4">
+        <div class="row">
+          <div class="col col-sm-3">
+            <h4>Concept</h4>
+            <div class="column-cards" id="concept-cards">
+              <!-- Cards -->
+              <div class="card card-highlight">
+                <div class="card-body">
+                  <h4>Some Title</h4>
+                  <p>This is some text within a card body.</p>
+                  <h6>
+                    Due Date:<br />
+                    <span class="current-date">November 9, 2025</span><br />
+                    <span class="date-till-now"></span>
+                  </h6>
+                </div>
+              </div>
+              <!-- Cards -->
+              <div class="card card-highlight">
+                <div class="card-body">
+                  <h4>Some Title</h4>
+                  <p>This is some text within a card body.</p>
+                  <h6>
+                    Due Date:<br />
+                    <span class="current-date">December 20, 2025</span><br />
+                    <span class="date-till-now"></span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col col-sm-3">
+            <h4>In-Progress</h4>
+            <div class="column-cards" id="progress-cards">
+              <!-- Cards -->
+              <div class="card card-highlight">
+                <div class="card-body">
+                  <h4>Some Title</h4>
+                  <p>This is some text within a card body.</p>
+                  <h6>
+                    Due Date: <br /><span class="current-date"
+                      >December 1, 2025</span
+                    ><br />
+                    <span class="date-till-now"></span>
+                  </h6>
+                </div>
+              </div>
+              <!-- Cards -->
+              <div class="card card-highlight">
+                <div class="card-body">
+                  <h4>Some Title</h4>
+                  <p>This is some text within a card body.</p>
+                  <h6>
+                    Due Date:<br />
+                    <span class="current-date">November 12, 2025</span><br />
+                    <span class="date-till-now"></span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col col-sm-3">
+            <h4>Content Review</h4>
+            <div class="column-cards" id="content-cards">
+              <!-- Cards -->
+              <div class="card card-highlight">
+                <div class="card-body">
+                  <h4>Some Title</h4>
+                  <p>This is some text within a card body.</p>
+                  <h6>
+                    Due Date: <br /><span class="current-date">
+                      November 15, 2025</span
+                    ><br />
+                    <span class="date-till-now"></span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col col-sm-3">
+            <h4>Completed</h4>
+            <div class="column-cards" id="commpleted-cards">
+              <!-- Cards -->
+              <div class="card card-highlight card-completed">
+                <div class="card-body">
+                  <h4>Some Title</h4>
+                  <p>This is some text within a card body.</p>
+                  <h6>
+                    Due Date: <br /><span class="current-date">
+                      November 15, 2025</span
+                    ><br />
+                    <span class="date-till-now"></span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
     <!-- Bootsrap JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+
+    <!-- My Javascript -->
+    <script src="./js/taskboard.js"></script>
   </body>
 </html>
