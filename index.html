@@ -51,7 +51,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="myModalLabel">Add Task Card</h5>
+            <h5 class="modal-title" id="addTaskModalLabel">Add Task Card</h5>
             <button
               type="button"
               class="btn-close"
@@ -80,7 +80,6 @@
                 class="form-control w-75"
                 rows="5"
                 cols="40"
-                type="text"
                 name="add-card-description"
                 placeholder="Card Description..."
                 maxlength="200"
@@ -125,7 +124,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="myModalLabel">Delete Card</h5>
+            <h5 class="modal-title" id="deleteTaskModalLabel">Delete Card</h5>
             <button
               type="button"
               class="btn-close"
@@ -187,6 +186,15 @@
                 href="javascript:void(0)"
                 id="edit-card-button"
                 >✏️ Edit Card</a
+              >
+              <hr class="hr-selector" />
+            </li>
+            <li>
+              <a
+                class="dropdown-item text-danger"
+                href="javascript:void(0)"
+                id="delete-card-button"
+                >Delete Card</a
               >
             </li>
           </ul>

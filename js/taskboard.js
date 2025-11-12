@@ -7,7 +7,18 @@ $(function () {
   let getAllDates = $(".current-date");
   let allCards = {};
   let addingCard = false;
-  $("#datepicker").datepicker();
+  const STRINGS_TO_CHECK = [
+    "hours",
+    "minutes",
+    "seconds",
+    "in a day",
+    "in an hour",
+    "minute",
+    "second",
+  ];
+  $("#datepicker").datepicker({
+    minDate: new Date(2024, 1 - 1, 1),
+  });
 
   // Pulls the info from storage
   function pullFromLocalStorage() {
@@ -73,20 +84,20 @@ $(function () {
   function setCardColors() {
     getAllDates = $(".current-date");
     for (let date of getAllDates) {
+      let keyId = $(date).closest("div.card").data("key");
+
       const sibling = $(date).siblings().last();
-      const dueDate = dayjs($(date).text());
+      const dueDate = dayjs(allCards[keyId].dateDue);
       sibling.text(`(${dueDate.fromNow()})`);
       const dueDateText = dueDate.fromNow();
       const dueDateNumber = parseInt(dueDate.fromNow(true).split(" ")[0]);
+      let stringCheck = STRINGS_TO_CHECK.some((check) =>
+        dueDateText.includes(check)
+      );
+
       if (dueDateText.includes("ago")) {
         sibling.closest("div.card").addClass("card-past-due");
-      } else if (
-        (dueDateNumber && dueDateNumber <= 5) ||
-        dueDateText.includes("hours") ||
-        dueDateText.includes("minutes") ||
-        dueDateText.includes("seconds") ||
-        dueDateText.includes("in a day")
-      ) {
+      } else if ((dueDateNumber && dueDateNumber <= 5) || stringCheck) {
         sibling.closest("div.card").addClass("card-almost-due");
       }
 
@@ -143,8 +154,6 @@ $(function () {
       location: "concept",
     };
 
-    console.log(allCards);
-
     saveToStorage();
     const conceptCardEl = $("#concept-cards");
 
@@ -155,7 +164,7 @@ $(function () {
       )
     );
     setCardColors();
-    //removeAndSetSelectEvent();
+    removeAndSetSelectEvent();
     makeAllCardsDraggable();
   }
 
@@ -163,14 +172,13 @@ $(function () {
   function convertToHTML(cardInfo, key) {
     let comptletedCard =
       cardInfo.location == "completed" ? "card-completed" : "";
-    console.log(cardInfo.location);
     return `<div class="card card-highlight drag-box ${comptletedCard}" data-key="${key}">
                 <div class="card-body" style="user-select: none;">
                   <h4>${cardInfo.title}</h4>
                   <p>${cardInfo.desc}</p>
                   <h6>
                     Due Date: <br /><span class="current-date"
-                      >${cardInfo.dateDue}</span
+                      >${dayjs(cardInfo.dateDue).format("MMMM D, YYYY")}</span
                     ><br />
                     <span class="date-till-now"></span>
                   </h6>
@@ -194,8 +202,11 @@ $(function () {
         $("#add-card-to-board").off("click");
         const titleInput = $("#add-card-title").val();
         const descriptionInput = $("#add-card-description").val();
-        const datePicker = dayjs($("#datepicker").val()).format("MMMM D, YYYY");
+        const datePicker = dayjs($("#datepicker").val()).format(
+          "MMMM D, YYYY 17:00:00"
+        );
 
+        console.log(datePicker);
         addCardToBoard(titleInput, descriptionInput, datePicker);
         $("#add-card-title").val("");
         $("#add-card-description").val("");
@@ -216,40 +227,41 @@ $(function () {
   }
 
   // Calls the delete currently selected card
-  // function deleteCardModal() {
-  //   const cardActive = $(".card-active");
+  function deleteCardModal() {
+    const cardActive = $(".card-active");
 
-  //   if (cardActive.length > 0) {
-  //     const deleteModal = $("#delete-modal");
-  //     deleteModal.modal("show");
+    if (cardActive.length > 0) {
+      const deleteModal = $("#delete-modal");
+      deleteModal.modal("show");
 
-  //     $("#delete-card-for-sure").on("click", function (event) {
-  //       // remove card from the screen and overall list and save
-  //       deleteFromStorage(cardActive.data("key"));
-  //       cardActive.remove();
-  //       deleteModal.modal("hide");
-  //       $("#delete-card-for-sure").off("click");
+      $("#delete-card-for-sure").on("click", function (event) {
+        // remove card from the screen and overall list and save
+        deleteFromStorage(cardActive.data("key"));
+        cardActive.remove();
+        deleteModal.modal("hide");
+        $("#delete-card-for-sure").off("click");
 
-  //       removeAndSetSelectEvent();
-  //     });
-  //   }
-  // }
+        removeAndSetSelectEvent();
+      });
+    }
+  }
 
   // Removes and resets the card-highlight mousedown event
-  // function removeAndSetSelectEvent() {
-  //   $(".card-highlight").off("mousedown");
-  //   $(".card-highlight").on("mousedown", highlightCard);
-  // }
+  function removeAndSetSelectEvent() {
+    $(".card-highlight").off("click");
+    $(".card-highlight").on("click", highlightCard);
+  }
 
   $("#add-card-button").on("click", addCardModal);
   $("#edit-card-button").on("click", editCardModal);
-  $(".delete-card-button").on("click", function (event) {
-    console.log(event.target);
+  $("#delete-card-button").on("click", deleteCardModal);
+  $("main").on("click", function (event) {
+    $(".card-active").removeClass("card-active");
   });
-  // $("#delete-card-button").on("click", deleteCardModal);
 
+  // default running functions
   pullFromLocalStorage();
-  setCardColors();
+  removeAndSetSelectEvent();
 
   // Concept column Droppable
   $("#concept-cards").droppable({
@@ -269,6 +281,7 @@ $(function () {
       droppedItem.removeClass(".ui-draggable-dragging");
       droppedItem.removeClass("card-completed");
       makeAllCardsDraggable();
+      removeAndSetSelectEvent();
       changeTaskLocation(droppedItem.data("key"), "concept");
       $(this).removeClass("drop-highlight");
       setCardColors();
@@ -299,6 +312,7 @@ $(function () {
       droppedItem.removeClass(".ui-draggable-dragging");
       droppedItem.removeClass("card-completed");
       makeAllCardsDraggable();
+      removeAndSetSelectEvent();
       changeTaskLocation(droppedItem.data("key"), "progress");
       $(this).removeClass("drop-highlight");
       setCardColors();
@@ -329,6 +343,7 @@ $(function () {
       droppedItem.removeClass("ui-draggable-dragging");
       droppedItem.removeClass("card-completed");
       makeAllCardsDraggable();
+      removeAndSetSelectEvent();
       changeTaskLocation(droppedItem.data("key"), "review");
       $(this).removeClass("drop-highlight");
       setCardColors();
@@ -341,7 +356,7 @@ $(function () {
     },
   });
 
-  // Content Review column Droppable
+  // Completed column Droppable
   $("#completed-cards").droppable({
     accept: ".ui-draggable",
     drop: function (event, ui) {
@@ -358,7 +373,8 @@ $(function () {
 
       droppedItem.removeClass(".ui-draggable-dragging");
       droppedItem.addClass("card-completed");
-      droppedItem.draggable();
+      makeAllCardsDraggable();
+      removeAndSetSelectEvent();
       changeTaskLocation(droppedItem.data("key"), "completed");
       $(this).removeClass("drop-highlight");
       setCardColors();
@@ -370,5 +386,4 @@ $(function () {
       $(this).removeClass("drop-highlight");
     },
   });
-  //removeAndSetSelectEvent();
 });
