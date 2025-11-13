@@ -62,7 +62,7 @@
           <div class="modal-body">
             <!-- Modal content goes here -->
             <div class="mb-3">
-              <label for="add-card-title"></label>
+              <label for="add-card-title">Title:</label>
               <input
                 class="form-control w-75"
                 type="text"
@@ -75,7 +75,7 @@
             </div>
             <br />
             <div class="mb-3">
-              <label for="add-card-description"></label>
+              <label for="add-card-description">Description:</label>
               <textarea
                 class="form-control w-75"
                 rows="5"
@@ -159,7 +159,8 @@
     <!-- End Modal for delete -->
     <nav class="nav-container">
       <div class="logo-container">
-        <a class="navbar-brand" href="#">Task Board</a>
+        <a class="navbar-brand" href="javascript:void(0)">Task Board</a>
+        <h6>Drag & Drop to Organize Your Data</h6>
       </div>
       <div class="dropdown-buttons">
         <div class="dropdown" data-bs-theme="dark">
@@ -169,7 +170,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Add Elements
+            Add/Edit Elements
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
             <li>
@@ -206,21 +207,70 @@
       <!-- Title Section -->
       <div class="container text-center col-sm-12">
         <div class="row">
-          <div class="col col-12 col-md-3">
-            <h4>Concept</h4>
-            <div class="column-cards" id="concept-cards"></div>
+          <div class="col col-12 col-md-3 list-headers">
+            <h4 class="list-header-h4">Concept</h4>
+            <div class="list-header-div">
+              <ul id="concept-cards">
+                <!-- Card List Item -->
+                <li class="list-item">
+                  <h4>Concept Card</h4>
+                  <p>Here is the description.</p>
+                  <div class="list-date">
+                    <h6>Due:Date</h6>
+                    <h6>November 25, 2025</h6>
+                    <h6>(in 15 days)</h6>
+                  </div>
+                </li>
+                <!-- Card List Item -->
+                <li class="list-item">
+                  <h4>Concept Card #2</h4>
+                  <p>Here is the description of #2.</p>
+                  <div class="list-date">
+                    <h6>Due:Date</h6>
+                    <h6>December 20, 2025</h6>
+                    <h6>(in 15 days)</h6>
+                  </div>
+                </li>
+                <!-- Card List Item -->
+                <li class="list-item">
+                  <h4>Concept Card #3</h4>
+                  <p>Here is the description of #3.</p>
+                  <div class="list-date">
+                    <h6>Due:Date</h6>
+                    <h6>December 20, 2025</h6>
+                    <h6>(in 15 days)</h6>
+                  </div>
+                </li>
+                <!-- Card List Item -->
+                <li class="list-item">
+                  <h4>Concept Card #4</h4>
+                  <p>Here is the description of #4.</p>
+                  <div class="list-date">
+                    <h6>Due:Date</h6>
+                    <h6>December 20, 2025</h6>
+                    <h6>(in 15 days)</h6>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="col col-12 col-md-3">
-            <h4>In-Progress</h4>
-            <div class="column-cards" id="progress-cards"></div>
+          <div class="col col-12 col-md-3 list-headers">
+            <h4 class="list-header-h4">In-Progress</h4>
+            <div class="list-header-div">
+              <ul id="progress-cards"></ul>
+            </div>
           </div>
-          <div class="col col-12 col-md-3">
-            <h4>Content Review</h4>
-            <div class="column-cards" id="review-cards"></div>
+          <div class="col col-12 col-md-3 list-headers">
+            <h4 class="list-header-h4">Content Review</h4>
+            <div class="list-header-div">
+              <ul id="review-cards"></ul>
+            </div>
           </div>
-          <div class="col col-12 col-md-3">
-            <h4>Completed</h4>
-            <div class="column-cards" id="completed-cards"></div>
+          <div class="col col-12 col-md-3 list-headers">
+            <h4 class="list-header-h4">Completed</h4>
+            <div class="list-header-div">
+              <ul id="completed-cards"></ul>
+            </div>
           </div>
         </div>
       </div>

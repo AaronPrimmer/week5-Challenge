@@ -13,9 +13,6 @@ body {
   background-attachment: fixed;
 }
 
-main {
-}
-
 .nav-container {
   background-color: hsl(0, 0%, 15%);
   max-width: 100%;
@@ -32,6 +29,14 @@ main {
   text-decoration: none;
   color: hsl(180, 100%, 96%);
   padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+}
+
+.logo-container h6 {
+  padding-left: 20px;
 }
 
 .dropdown-buttons {
@@ -42,6 +47,52 @@ main {
 
 .main-section {
   margin-top: 20px;
+}
+
+.list-header-h4 {
+  background-color: hsl(208, 77%, 97%);
+  border: 1px solid black;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin: 0;
+}
+
+.list-header-div {
+  background-color: hsl(208, 100%, 97%);
+  padding: 20px 5px;
+  margin: 0;
+  border: 1px solid black;
+  min-height: 750px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.list-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  border: none;
+  background-color: rgb(196, 196, 196);
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 150px;
+  user-select: none;
+}
+
+.list-item h4,
+.list-item p {
+  margin-bottom: 0;
+}
+
+.list-date {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 0.2em;
+}
+
+.list-date h6 {
+  margin: 0;
 }
 
 .column-cards {
@@ -60,7 +111,7 @@ main {
 .card-highlight:hover {
   box-shadow: 0 0 5px hsl(0, 0%, 22%);
   transform: scale(105%);
-  cursor: pointer;
+  cursor: grab;
 }
 
 .card-active {
@@ -84,24 +135,26 @@ main {
   border-radius: 5px;
 }
 
-#concept-cards {
-  min-height: 100%;
-  padding-bottom: 100px;
-}
-
-#progress-cards {
-  min-height: 100%;
-  padding-bottom: 100px;
-}
-
-#review-cards {
-  min-height: 100%;
-  padding-bottom: 100px;
-}
-
+#concept-cards,
+#progress-cards,
+#review-cards,
 #completed-cards {
-  min-height: 100%;
-  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  min-height: 600px;
+  margin-bottom: 10px;
+}
+
+.sorting-ui {
+  margin-bottom: 10px;
+  list-style-type: none;
+  background-color: hsl(60, 100%, 80%);
+  border: 1px solid hsl(240, 100%, 59%);
+  height: 150px;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -113,5 +166,9 @@ main {
 @media only screen and (max-width: 768px) {
   h4 {
     font-size: 1em;
+  }
+
+  .list-header-div {
+    margin-bottom: 20px;
   }
 }
