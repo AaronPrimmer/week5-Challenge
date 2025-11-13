@@ -49,22 +49,35 @@ body {
   margin-top: 20px;
 }
 
+/* .list-headers {
+  width: 25%;
+} */
+
 .list-header-h4 {
-  background-color: hsl(208, 77%, 97%);
-  border: 1px solid black;
+  /* background-color: hsl(208, 77%, 97%); */
+  /* border: 1px solid black; */
+  position: relative;
+  padding: 10px 0;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   margin: 0;
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2),
+    inset 0 -2px 5px rgba(255, 255, 255, 0.5), 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .list-header-div {
-  background-color: hsl(208, 100%, 97%);
+  /* background-color: hsl(208, 100%, 97%); */
+  position: relative;
   padding: 20px 5px;
   margin: 0;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   min-height: 750px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2),
+    inset 0 -2px 5px rgba(255, 255, 255, 0.5), 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .list-item {
@@ -77,11 +90,20 @@ body {
   padding: 10px;
   min-height: 150px;
   user-select: none;
+  z-index: 50;
+  text-align: center;
+  /* transition: all 0.2s ease-in-out; */
 }
 
 .list-item h4,
 .list-item p {
   margin-bottom: 0;
+}
+
+.list-item:hover,
+.list-item:active {
+  box-shadow: 0 0 5px gray;
+  transform: scale(101%);
 }
 
 .list-date {
@@ -135,10 +157,10 @@ body {
   border-radius: 5px;
 }
 
-#concept-cards,
-#progress-cards,
-#review-cards,
-#completed-cards {
+#conceptCards,
+#progressCards,
+#reviewCards,
+#completedCards {
   display: flex;
   flex-direction: column;
   gap: 0.6em;
@@ -165,7 +187,7 @@ body {
 
 @media only screen and (max-width: 768px) {
   h4 {
-    font-size: 1em;
+    font-size: 1.5em;
   }
 
   .list-header-div {

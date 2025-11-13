@@ -62,35 +62,35 @@
           <div class="modal-body">
             <!-- Modal content goes here -->
             <div class="mb-3">
-              <label for="add-card-title">Title:</label>
+              <label for="addCardTitle">Title:</label>
               <input
                 class="form-control w-75"
                 type="text"
-                name="add-card-title"
+                name="addCardTitle"
                 placeholder="Card Title..."
                 maxlength="30"
-                id="add-card-title"
+                id="addCardTitle"
                 required
               />
             </div>
             <br />
             <div class="mb-3">
-              <label for="add-card-description">Description:</label>
+              <label for="addCardDescription">Description:</label>
               <textarea
                 class="form-control w-75"
                 rows="5"
                 cols="40"
-                name="add-card-description"
+                name="addCardDescription"
                 placeholder="Card Description..."
                 maxlength="200"
-                id="add-card-description"
+                id="addCardDescription"
                 required
               ></textarea>
             </div>
           </div>
           <div class="mb-3" style="margin-left: 15px">
-            <label for="datepicker">Select a date:</label>
-            <input type="text" id="datepicker" class="form-control w-75" />
+            <label for="datePicker">Select a date:</label>
+            <input type="text" id="datePicker" class="form-control w-75" />
           </div>
           <div class="modal-footer">
             <button
@@ -100,11 +100,7 @@
             >
               Close
             </button>
-            <button
-              type="button"
-              class="btn btn-success"
-              id="add-card-to-board"
-            >
+            <button type="button" class="btn btn-success" id="addCardToboard">
               Add Task
             </button>
           </div>
@@ -162,44 +158,10 @@
         <a class="navbar-brand" href="javascript:void(0)">Task Board</a>
         <h6>Drag & Drop to Organize Your Data</h6>
       </div>
-      <div class="dropdown-buttons">
-        <div class="dropdown" data-bs-theme="dark">
-          <button
-            class="btn dropdown-toggle btn-info"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Add/Edit Elements
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
-            <li>
-              <a
-                class="dropdown-item"
-                href="javascript:void(0)"
-                id="add-card-button"
-                >+ Add Card</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                href="javascript:void(0)"
-                id="edit-card-button"
-                >✏️ Edit Card</a
-              >
-              <hr class="hr-selector" />
-            </li>
-            <li>
-              <a
-                class="dropdown-item text-danger"
-                href="javascript:void(0)"
-                id="delete-card-button"
-                >Delete Card</a
-              >
-            </li>
-          </ul>
-        </div>
+      <div>
+        <button class="btn btn-outline-info" id="addTaskButton" type="button">
+          + Add Task
+        </button>
       </div>
     </nav>
     <!-- Main Area -->
@@ -207,10 +169,10 @@
       <!-- Title Section -->
       <div class="container text-center col-sm-12">
         <div class="row">
-          <div class="col col-12 col-md-3 list-headers">
+          <div class="list-headers col col-12 col-md-3">
             <h4 class="list-header-h4">Concept</h4>
             <div class="list-header-div">
-              <ul id="concept-cards">
+              <ul id="conceptCards">
                 <!-- Card List Item -->
                 <li class="list-item">
                   <h4>Concept Card</h4>
@@ -257,19 +219,19 @@
           <div class="col col-12 col-md-3 list-headers">
             <h4 class="list-header-h4">In-Progress</h4>
             <div class="list-header-div">
-              <ul id="progress-cards"></ul>
+              <ul id="progressCards"></ul>
             </div>
           </div>
           <div class="col col-12 col-md-3 list-headers">
             <h4 class="list-header-h4">Content Review</h4>
             <div class="list-header-div">
-              <ul id="review-cards"></ul>
+              <ul id="reviewCards"></ul>
             </div>
           </div>
           <div class="col col-12 col-md-3 list-headers">
             <h4 class="list-header-h4">Completed</h4>
             <div class="list-header-div">
-              <ul id="completed-cards"></ul>
+              <ul id="completedCards"></ul>
             </div>
           </div>
         </div>
