@@ -42,7 +42,7 @@
     <!-- Modal for add -->
     <div
       class="modal fade"
-      id="add-modal"
+      id="addModal"
       tabindex="-1"
       role="dialog"
       aria-labelledby="myModalLabel"
@@ -108,6 +108,75 @@
       </div>
     </div>
     <!-- End Modal for add -->
+    <!-- Modal for edit -->
+    <div
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editTaskModalLabel">Edit Task Card</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Modal content goes here -->
+            <div class="mb-3">
+              <label for="editCardTitle">Title:</label>
+              <input
+                class="form-control w-75"
+                type="text"
+                name="editCardTitle"
+                placeholder="Card Title..."
+                maxlength="30"
+                id="editCardTitle"
+                required
+              />
+            </div>
+            <br />
+            <div class="mb-3">
+              <label for="editCardDescription">Description:</label>
+              <textarea
+                class="form-control w-75"
+                rows="5"
+                cols="40"
+                name="editCardDescription"
+                placeholder="Card Description..."
+                maxlength="200"
+                id="editCardDescription"
+                required
+              ></textarea>
+            </div>
+          </div>
+          <div class="mb-3" style="margin-left: 15px">
+            <label for="editDatePicker">Select a date:</label>
+            <input type="text" id="editDatePicker" class="form-control w-75" />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-success" id="editCardToboard">
+              Save Edit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal for edit -->
     <!-- Modal for delete -->
     <div
       class="modal fade"
@@ -158,7 +227,8 @@
         <a class="navbar-brand" href="javascript:void(0)">Task Board</a>
         <h6>Drag & Drop to Organize Your Data</h6>
       </div>
-      <div>
+      <div class="logo-side-container">
+        <span id="todaysDate"></span>
         <button class="btn btn-outline-info" id="addTaskButton" type="button">
           + Add Task
         </button>

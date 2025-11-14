@@ -17,6 +17,9 @@ $(function () {
 
   // Variables //
   let addingCard = false;
+  let editingCard = false;
+  const addModal = $("#addModal");
+  const editModal = $("#editModal");
 
   // All current card info
   let allCards = {};
@@ -25,6 +28,12 @@ $(function () {
   $("#datePicker").datepicker({
     minDate: new Date(2024, 1 - 1, 1),
   });
+  $("#editDatePicker").datepicker({
+    minDate: new Date(2024, 1 - 1, 1),
+  });
+
+  // Sets todays date element
+  $("#todaysDate").text(dayjs().format("dddd MMMM D, YYYY"));
 
   // Save info to local storage
   function saveToStorage() {
@@ -40,8 +49,6 @@ $(function () {
         addCardToBoard(allCards[card]);
       }
     }
-
-    allButtonEvents();
   }
 
   // Add Card to the board on create
@@ -64,44 +71,11 @@ $(function () {
   // Add card info when the button is clicked
   function addCardInfo(event) {
     addingCard = true;
-    const addModal = $("#add-modal");
     addModal.modal("show");
 
     // Event listener for the add task modal button
-    $("#addCardToboard").on("click", function (event) {
-      if (
-        $("#addCardTitle").val() &&
-        $("#addCardDescription").val() &&
-        $("#datePicker").val()
-      ) {
-        addModal.modal("hide");
-        $("#addCardToboard").off("click");
-        let currentKey = getRandomKey();
-        for (let cardKey in allCards) {
-          while (currentKey == cardKey) {
-            currentKey = getRandomKey();
-          }
-        }
-        const allInput = {
-          title: $("#addCardTitle").val(),
-          description: $("#addCardDescription").val(),
-          dueDate: dayjs($("#datePicker").val()).format(
-            "MMMM D, YYYY 17:00:00"
-          ),
-          keyId: currentKey,
-          location: "toDoCards",
-        };
+    $("#addCardToboard").on("click", addItemButtonClick);
 
-        allCards[currentKey] = allInput;
-        saveToStorage();
-        addCardToBoard(allInput);
-        $("#addCardTitle").val("");
-        $("#addCardDescription").val("");
-        $("#datePicker").val("");
-      }
-    });
-
-    allButtonEvents();
     addingCard = false;
   }
 
@@ -112,8 +86,8 @@ $(function () {
                   <p>${cardInfo.description}</p>
                   <div class="list-date">
                     <h6>Due Date:</h6>
-                    <h6>${dayjs(cardInfo.dueDate).format("MMMM d, YYYY")}</h6>
-                    <h6>${dayjs(cardInfo.dueDate).fromNow(true)}</h6>
+                    <h6>${dayjs(cardInfo.dueDate).format("MMMM D, YYYY")}</h6>
+                    <h6>${dayjs(cardInfo.dueDate).fromNow(false)}</h6>
                   </div>
                   <div class="cardButtons">
                     <button type="button" class="editButton">✏️</button>
@@ -122,18 +96,104 @@ $(function () {
                 </li>`;
   }
 
+  // Edit card info on edit button click, load all item values
+  function editCardInfo(editInfo) {
+    editingCard = true;
+    $("#editCardTitle").val(editInfo.title);
+    $("#editCardDescription").val(editInfo.description);
+    $("#editDatePicker").val(editInfo.dueDate);
+    editModal.modal("show");
+
+    $("#editCardToboard").on("click", (event) =>
+      editItemButtonClick(event, editInfo.keyId)
+    );
+
+    editingCard = false;
+  }
+
+  // Modal Button Clicks //
+  // Add button on modal clicked, add card to board
+  function addItemButtonClick(event) {
+    if (
+      $("#addCardTitle").val() &&
+      $("#addCardDescription").val() &&
+      $("#datePicker").val()
+    ) {
+      addModal.modal("hide");
+      $("#addCardToboard").off("click");
+      let currentKey = getRandomKey();
+      for (let cardKey in allCards) {
+        while (currentKey == cardKey) {
+          currentKey = getRandomKey();
+        }
+      }
+      const allInput = {
+        title: $("#addCardTitle").val(),
+        description: $("#addCardDescription").val(),
+        dueDate: dayjs($("#datePicker").val()).format("MMMM D, YYYY 17:00:00"),
+        keyId: currentKey,
+        location: "toDoCards",
+      };
+
+      allCards[currentKey] = allInput;
+      saveToStorage();
+      addCardToBoard(allInput);
+      $("#addCardTitle").val("");
+      $("#addCardDescription").val("");
+      $("#datePicker").val("");
+    }
+  }
+
+  //Edit button on modal clicked, edit info on card
+  function editItemButtonClick(event, infoKey) {
+    allCards[infoKey].title = $("#editCardTitle").val();
+    allCards[infoKey].description = $("#editCardDescription").val();
+    allCards[infoKey].dueDate = $("#editDatePicker").val();
+
+    saveToStorage();
+    editModal.modal("hide");
+
+    let editedItem = $(`li[data-key="${infoKey}"]`);
+    editedItem.children("h4").text(allCards[infoKey].title);
+    editedItem.children("p").text(allCards[infoKey].description);
+    editedItem
+      .children(".list-date")
+      .children("h6:nth-of-type(2)")
+      .text(dayjs(allCards[infoKey].dueDate).format("MMMM D, YYYY"));
+    editedItem
+      .children(".list-date")
+      .children("h6:nth-of-type(3)")
+      .text(dayjs(allCards[infoKey].dueDate).fromNow(false));
+  }
+
   // Edit Button click function
   function editButtonClick(event) {
-    console.log(`Edit: ${event.target}`);
+    if (editingCard) {
+      return;
+    }
+    let targetListItem = $(event.target).parent().parent();
+    let targetData = allCards[targetListItem.data("key")];
+
+    editCardInfo(targetData);
   }
 
   // Deletes Button click function
   function deleteButtonClick(event) {
-    console.log(`Delete: ${event.target}`);
+    let targetListItem = $(event.target).parent().parent();
+    let targetId = targetListItem.data("key");
+    allCards[targetId] = "";
+    saveToStorage();
+    targetListItem.remove();
   }
 
   // Button Click Event Listeners
   $("#addTaskButton").on("click", addCardInfo);
+  $("#toDoCards").on("click", ".editButton", editButtonClick);
+  $("#toDoCards").on("click", ".deleteButton", deleteButtonClick);
+  $("#progressCards").on("click", ".editButton", editButtonClick);
+  $("#progressCards").on("click", ".deleteButton", deleteButtonClick);
+  $("#completedCards").on("click", ".editButton", editButtonClick);
+  $("#completedCards").on("click", ".deleteButton", deleteButtonClick);
 
   // Function to add event listeners for all buttons
   function allButtonEvents() {
