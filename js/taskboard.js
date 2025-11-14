@@ -6,11 +6,14 @@ dayjs.extend(dayjs_plugin_relativeTime);
 $(function () {
   // TODO: Add saving Functionality
   // TODO: Add loading Functionality
-  // TODO: Add Card on click
+  // TODO: Add Card on click ✅
   // TODO: Edit Card on Click
   // TODO: Delete Card on Click
   // TODO: Change colors of cards based on date until
   // TODO: Change color of completed cards only to green when dropped in list
+
+  // Constant Variables //
+  const STORAGE_KEY = "taskBoardCards";
 
   // Variables //
   let addingCard = false;
@@ -23,22 +26,41 @@ $(function () {
     minDate: new Date(2024, 1 - 1, 1),
   });
 
+  // Save info to local storage
+  function saveToStorage() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(allCards));
+  }
+
+  // Retrieves the items from local storage
+  function retrieveFromStorage() {
+    let storedCards = localStorage.getItem(STORAGE_KEY);
+    if (storedCards) {
+      allCards = JSON.parse(storedCards);
+      for (let card in allCards) {
+        addCardToBoard(allCards[card]);
+      }
+    }
+  }
+
   // Add Card to the board on create
   function addCardToBoard(allInfo) {
     if (addingCard) {
       return;
     }
     if (allInfo) {
-      addingCard = true;
       const listHTML = addHTMLList(allInfo);
 
-      if (allInfo.location == "concept") {
-        $("#conceptCards").prepend(listHTML);
+      if (allInfo.location == "toDo") {
+        $("#toDoCards").prepend(listHTML);
+      } else if (allInfo.location == "progressCards") {
+        $("#progressCards").prepend(listHTML);
+      } else if (allInfo.location == "completedCards") {
+        $("#completedCards").prepend(listHTML);
       }
     }
   }
 
-  // Gets random number
+  // Gets random number for the key
   function getRandomKey() {
     return Math.floor(Math.random() * 1000000);
   }
@@ -49,6 +71,7 @@ $(function () {
     const addModal = $("#add-modal");
     addModal.modal("show");
 
+    // Event listener for the add task modal button
     $("#addCardToboard").on("click", function (event) {
       if (
         $("#addCardTitle").val() &&
@@ -70,10 +93,11 @@ $(function () {
             "MMMM D, YYYY 17:00:00"
           ),
           keyId: currentKey,
-          location: "concept",
+          location: "toDo",
         };
 
-        console.log(datePicker);
+        allCards[currentKey] = allInput;
+        saveToStorage();
         addCardToBoard(allInput);
         $("#addCardTitle").val("");
         $("#addCardDescription").val("");
@@ -90,9 +114,13 @@ $(function () {
                   <h4>${cardInfo.title}</h4>
                   <p>${cardInfo.description}</p>
                   <div class="list-date">
-                    <h6>Due:Date</h6>
+                    <h6>Due Date:</h6>
                     <h6>${dayjs(cardInfo.dueDate).format("MMMM d, YYYY")}</h6>
                     <h6>${dayjs(cardInfo.dueDate).fromNow(true)}</h6>
+                  </div>
+                  <div class="cardButtons">
+                    <button type="button" class="editButton">✏️</button>
+                    <button type="button" class="deleteButton">❌</button>
                   </div>
                 </li>`;
   }
@@ -100,13 +128,25 @@ $(function () {
   // Button Click Event Listeners
   $("#addTaskButton").on("click", addCardInfo);
 
-  $("#conceptCards, #progressCards, #reviewCards, #completedCards").sortable({
-    placeholder: "sorting-ui",
-    connectWith: "ul",
-    cursor: "grabbing",
-    appendTo: "main",
-    helper: "clone",
-  });
+  $("#progressCards, #toDoCards, #completedCards")
+    .sortable({
+      placeholder: "sorting-ui",
+      connectWith: "ul",
+      cursor: "grabbing",
+      appendTo: "main",
+      helper: "clone",
+      scroll: false,
+      stop: function (event, ui) {
+        // When item is placed, change location of item in storage
+        let stortedItem = ui.item;
+        let parentList = stortedItem.parent();
+        let itemKey = stortedItem.data("key");
+
+        allCards[itemKey].location = parentList.attr("id");
+        saveToStorage();
+      },
+    })
+    .disableSelection();
 
   // $("#progressCards").sortable({
   //   placeholder: "sorting-ui",
@@ -141,7 +181,5 @@ $(function () {
   //   },
   // });
 
-  $(
-    "#conceptCards, #progressCards, #reviewCards, #completedCards"
-  ).disableSelection();
+  retrieveFromStorage();
 });

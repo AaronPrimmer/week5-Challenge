@@ -157,9 +157,8 @@ body {
   border-radius: 5px;
 }
 
-#conceptCards,
 #progressCards,
-#reviewCards,
+#toDoCards,
 #completedCards {
   display: flex;
   flex-direction: column;
@@ -177,6 +176,48 @@ body {
   background-color: hsl(60, 100%, 80%);
   border: 1px solid hsl(240, 100%, 59%);
   height: 150px;
+}
+
+.cardButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+}
+
+.editButton {
+  background-color: hsl(133, 100%, 81%);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.editButton:hover {
+  background-color: hsl(133, 100%, 91%);
+  box-shadow: 0 0 5px hsl(0, 0%, 22%);
+}
+
+.editButton:active {
+  background-color: hsl(133, 43%, 55%);
+  box-shadow: none;
+}
+
+.deleteButton {
+  background-color: hsl(0, 100%, 81%);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.deleteButton:hover {
+  background-color: hsl(0, 100%, 91%);
+  box-shadow: 0 0 5px hsl(0, 0%, 22%);
+}
+
+.deleteButton:active {
+  background-color: hsl(0, 43%, 55%);
+  box-shadow: none;
 }
 
 @media only screen and (max-width: 1200px) {
