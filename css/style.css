@@ -85,7 +85,7 @@ body {
   flex-direction: column;
   gap: 0.8em;
   border: none;
-  background-color: rgb(196, 196, 196);
+  background-color: hsl(0, 4%, 85%);
   border-radius: 10px;
   padding: 10px;
   min-height: 150px;

@@ -40,6 +40,8 @@ $(function () {
         addCardToBoard(allCards[card]);
       }
     }
+
+    allButtonEvents();
   }
 
   // Add Card to the board on create
@@ -50,13 +52,7 @@ $(function () {
     if (allInfo) {
       const listHTML = addHTMLList(allInfo);
 
-      if (allInfo.location == "toDo") {
-        $("#toDoCards").prepend(listHTML);
-      } else if (allInfo.location == "progressCards") {
-        $("#progressCards").prepend(listHTML);
-      } else if (allInfo.location == "completedCards") {
-        $("#completedCards").prepend(listHTML);
-      }
+      $(`#${allInfo.location}`).prepend(listHTML);
     }
   }
 
@@ -93,7 +89,7 @@ $(function () {
             "MMMM D, YYYY 17:00:00"
           ),
           keyId: currentKey,
-          location: "toDo",
+          location: "toDoCards",
         };
 
         allCards[currentKey] = allInput;
@@ -105,6 +101,7 @@ $(function () {
       }
     });
 
+    allButtonEvents();
     addingCard = false;
   }
 
@@ -125,9 +122,26 @@ $(function () {
                 </li>`;
   }
 
+  // Edit Button click function
+  function editButtonClick(event) {
+    console.log(`Edit: ${event.target}`);
+  }
+
+  // Deletes Button click function
+  function deleteButtonClick(event) {
+    console.log(`Delete: ${event.target}`);
+  }
+
   // Button Click Event Listeners
   $("#addTaskButton").on("click", addCardInfo);
 
+  // Function to add event listeners for all buttons
+  function allButtonEvents() {
+    $("button").on("click", ".editButton", editButtonClick);
+    $("button").on("click", ".deleteButton", deleteButtonClick);
+  }
+
+  // Sets the sortable method for card movement
   $("#progressCards, #toDoCards, #completedCards")
     .sortable({
       placeholder: "sorting-ui",
@@ -147,39 +161,6 @@ $(function () {
       },
     })
     .disableSelection();
-
-  // $("#progressCards").sortable({
-  //   placeholder: "sorting-ui",
-  //   connectWith: "ul",
-  //   cursor: "grabbing",
-  //   appendTo: "main",
-  //   helper: "clone",
-  //   activate: function (event, ui) {
-  //     console.log(event);
-  //   },
-  // });
-
-  // $("#reviewCards").sortable({
-  //   placeholder: "sorting-ui",
-  //   connectWith: "ul",
-  //   cursor: "grabbing",
-  //   appendTo: "main",
-  //   helper: "clone",
-  //   activate: function (event, ui) {
-  //     console.log(event);
-  //   },
-  // });
-
-  // $("#completedCards").sortable({
-  //   placeholder: "sorting-ui",
-  //   connectWith: "ul",
-  //   cursor: "grabbing",
-  //   appendTo: "main",
-  //   helper: "clone",
-  //   activate: function (event, ui) {
-  //     console.log(event);
-  //   },
-  // });
 
   retrieveFromStorage();
 });
