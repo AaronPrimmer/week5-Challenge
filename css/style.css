@@ -143,15 +143,15 @@ body {
 }
 
 .card-almost-due {
-  background-color: hsl(60, 100%, 81%);
+  background-color: hsl(60, 100%, 90%);
 }
 
 .card-completed {
-  background-color: hsl(133, 100%, 81%);
+  background-color: hsl(133, 100%, 90%);
 }
 
 .card-past-due {
-  background-color: hsl(0, 100%, 81%);
+  background-color: hsl(0, 100%, 90%);
 }
 
 .drop-highlight {
@@ -180,7 +180,7 @@ body {
   height: 200px;
 }
 
-.cardButtons {
+.card-buttons {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -189,14 +189,14 @@ body {
 }
 
 .editButton {
-  background-color: hsl(133, 100%, 81%);
+  background-color: hsl(226, 100%, 81%);
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
 }
 
 .editButton:hover {
-  background-color: hsl(133, 100%, 91%);
+  background-color: hsl(226, 100%, 91%);
   box-shadow: 0 0 5px hsl(0, 0%, 22%);
 }
 

@@ -57,10 +57,28 @@ $(function () {
       return;
     }
     if (allInfo) {
+      let hoursUntilDate = dayjs(allInfo.dueDate).diff(dayjs(), "hour");
+      allInfo.card = returnDueDateClass(hoursUntilDate, allInfo.location);
+
       const listHTML = addHTMLList(allInfo);
 
       $(`#${allInfo.location}`).prepend(listHTML);
     }
+  }
+
+  // Checks the due date by hour and returns what class should be attached
+  function returnDueDateClass(hoursUntilDate, itemLocation) {
+    if (hoursUntilDate <= 0) {
+      return "card-past-due";
+    } else if (hoursUntilDate > 0 && hoursUntilDate <= 120) {
+      return "card-almost-due";
+    }
+
+    if (itemLocation == "completedCards") {
+      return "card-completed";
+    }
+
+    return "";
   }
 
   // Gets random number for the key
@@ -81,7 +99,7 @@ $(function () {
 
   // Returns the list item HTML with the data-key set
   function addHTMLList(cardInfo) {
-    return `<li class="list-item" data-key="${cardInfo.keyId}">
+    return `<li class="list-item ${cardInfo.card}" data-key="${cardInfo.keyId}">
                   <h4>${cardInfo.title}</h4>
                   <p>${cardInfo.description}</p>
                   <div class="list-date">
@@ -89,7 +107,7 @@ $(function () {
                     <h6>${dayjs(cardInfo.dueDate).format("MMMM D, YYYY")}</h6>
                     <h6>${dayjs(cardInfo.dueDate).fromNow(false)}</h6>
                   </div>
-                  <div class="cardButtons">
+                  <div class="card-buttons">
                     <button type="button" class="editButton">✏️</button>
                     <button type="button" class="deleteButton">❌</button>
                   </div>
@@ -212,11 +230,27 @@ $(function () {
       scroll: false,
       stop: function (event, ui) {
         // When item is placed, change location of item in storage
-        let stortedItem = ui.item;
-        let parentList = stortedItem.parent();
-        let itemKey = stortedItem.data("key");
+        let sortedItem = ui.item;
+        let parentList = sortedItem.parent();
+        let itemKey = sortedItem.data("key");
 
         allCards[itemKey].location = parentList.attr("id");
+        if (allCards[itemKey].location == "completedCards") {
+          $(sortedItem).children("div.list-date").hide();
+          $(sortedItem).children("div.card-buttons").hide();
+          $(sortedItem).removeClass("card-past-due");
+          $(sortedItem).removeClass("card-almost-due");
+          $(sortedItem).addClass("card-completed");
+        } else {
+          $(sortedItem).children("div.list-date").show();
+          $(sortedItem).children("div.card-buttons").show();
+          $(sortedItem).removeClass("card-completed");
+          let classToAdd = returnDueDateClass(
+            dayjs(allCards[itemKey].dueDate).diff(dayjs(), "hour"),
+            allCards[itemKey].location
+          );
+          $(sortedItem).addClass(classToAdd);
+        }
         saveToStorage();
       },
     })
