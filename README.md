@@ -2,7 +2,7 @@
 
 ## Overview
 
-Mini Kanban board where you can Add, Edit and Delete tasks from the task board. Keep track of your projects by sorted your items.
+Mini Kanban board where you can Add, Edit and Delete tasks from the task board. Keep track of your projects by sorting your items.
 
 ---
 
