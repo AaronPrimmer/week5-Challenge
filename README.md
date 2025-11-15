@@ -8,7 +8,7 @@ Mini Kanban board where you can Add, Edit and Delete tasks from the task board. 
 
 ## View the working board
 
-[Link to Board](https://www.google.com)
+[Link to Board](https://aaronprimmer.github.io/week5-Challenge/)
 
 ---
 
