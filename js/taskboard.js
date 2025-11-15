@@ -20,6 +20,7 @@ $(function () {
   let editingCard = false;
   const addModal = $("#addModal");
   const editModal = $("#editModal");
+  const deleteModal = $("#deleteModal");
 
   // All current card info
   let allCards = {};
@@ -63,22 +64,27 @@ $(function () {
       const listHTML = addHTMLList(allInfo);
 
       $(`#${allInfo.location}`).prepend(listHTML);
+
+      showHideItems(allInfo.keyId);
     }
   }
 
   // Checks the due date by hour and returns what class should be attached
   function returnDueDateClass(hoursUntilDate, itemLocation) {
-    if (hoursUntilDate <= 0) {
-      return "card-past-due";
-    } else if (hoursUntilDate > 0 && hoursUntilDate <= 120) {
-      return "card-almost-due";
+    let cardLocationInfo = "";
+    if (itemLocation != "completedCards") {
+      if (hoursUntilDate <= 0) {
+        cardLocationInfo = "card-past-due";
+      } else if (hoursUntilDate > 0 && hoursUntilDate <= 120) {
+        cardLocationInfo = "card-almost-due";
+      }
     }
 
     if (itemLocation == "completedCards") {
-      return "card-completed";
+      cardLocationInfo = "card-completed";
     }
 
-    return "";
+    return cardLocationInfo;
   }
 
   // Gets random number for the key
@@ -129,6 +135,16 @@ $(function () {
     editingCard = false;
   }
 
+  // Shows modal and deletes item if user is sure
+  function delteForSure(targetListItem, targetId) {
+    deleteModal.modal("hide");
+    $("#deleteCardForSure").on("click");
+
+    allCards[targetId] = "";
+    saveToStorage();
+    targetListItem.remove();
+  }
+
   // Modal Button Clicks //
   // Add button on modal clicked, add card to board
   function addItemButtonClick(event) {
@@ -170,6 +186,7 @@ $(function () {
 
     saveToStorage();
     editModal.modal("hide");
+    $("#editCardToboard").off("click");
 
     let editedItem = $(`li[data-key="${infoKey}"]`);
     editedItem.children("h4").text(allCards[infoKey].title);
@@ -199,9 +216,30 @@ $(function () {
   function deleteButtonClick(event) {
     let targetListItem = $(event.target).parent().parent();
     let targetId = targetListItem.data("key");
-    allCards[targetId] = "";
-    saveToStorage();
-    targetListItem.remove();
+    deleteModal.modal("show");
+
+    $("#deleteCardForSure").on("click", (event) =>
+      delteForSure(targetListItem, targetId)
+    );
+  }
+
+  // Shows/Hides date and buttons on cards
+  function showHideItems(itemKey) {
+    let sortedItem = $(`li[data-key="${itemKey}"]`);
+    if (allCards[itemKey].location == "completedCards") {
+      sortedItem.children("div.list-date").hide();
+      sortedItem.removeClass("card-past-due");
+      sortedItem.removeClass("card-almost-due");
+      sortedItem.addClass("card-completed");
+    } else {
+      sortedItem.children("div.list-date").show();
+      sortedItem.removeClass("card-completed");
+      let classToAdd = returnDueDateClass(
+        dayjs(allCards[itemKey].dueDate).diff(dayjs(), "hour"),
+        allCards[itemKey].location
+      );
+      sortedItem.addClass(classToAdd);
+    }
   }
 
   // Button Click Event Listeners
@@ -235,22 +273,8 @@ $(function () {
         let itemKey = sortedItem.data("key");
 
         allCards[itemKey].location = parentList.attr("id");
-        if (allCards[itemKey].location == "completedCards") {
-          $(sortedItem).children("div.list-date").hide();
-          $(sortedItem).children("div.card-buttons").hide();
-          $(sortedItem).removeClass("card-past-due");
-          $(sortedItem).removeClass("card-almost-due");
-          $(sortedItem).addClass("card-completed");
-        } else {
-          $(sortedItem).children("div.list-date").show();
-          $(sortedItem).children("div.card-buttons").show();
-          $(sortedItem).removeClass("card-completed");
-          let classToAdd = returnDueDateClass(
-            dayjs(allCards[itemKey].dueDate).diff(dayjs(), "hour"),
-            allCards[itemKey].location
-          );
-          $(sortedItem).addClass(classToAdd);
-        }
+        showHideItems(itemKey);
+
         saveToStorage();
       },
     })

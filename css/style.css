@@ -201,7 +201,7 @@ body {
 }
 
 .editButton:active {
-  background-color: hsl(133, 43%, 55%);
+  background-color: hsl(226, 100%, 55%);
   box-shadow: none;
 }
 
